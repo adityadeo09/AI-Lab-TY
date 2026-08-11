@@ -45,77 +45,55 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
 
-        // Number of elements
+        // Step 1: Depth
+        System.out.print("Enter depth of tree: ");
+        int depth = sc.nextInt();
+
+        // Step 2: No. of elements
         System.out.print("Enter number of elements: ");
         int n = sc.nextInt();
 
+        // Step 3: Elements
+        String[] elements = new String[n];
+
+        System.out.println("Enter the elements:");
+
+        for (int i = 1; i < n; i++) {
+            elements[i] = sc.next();
+        }
+
+        // Create tree
         tree = new ArrayList[n];
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 1; i < n; i++) {
             tree[i] = new ArrayList<>();
         }
 
-        // Enter connections
-        System.out.println("Enter " + (n - 1) + " connections:");
+        // Create binary tree automatically
+        for (int i = 1; i < n; i++) {
 
-        for (int i = 0; i < n - 1; i++) {
-            System.out.print("Enter parent and child: ");
+            int left = 2 * i + 1;
+            int right = 2 * i + 2;
 
-            int parent = sc.nextInt();
-            int child = sc.nextInt();
+            if (left < n)
+                tree[i].add(left);
 
-            tree[parent].add(child);
+            if (right < n)
+                tree[i].add(right);
         }
 
-        // Starting element
-        System.out.print("Enter starting element: ");
-        int start = sc.nextInt();
+        System.out.println("\nDepth: " + depth);
 
         // BFS
-        BFS(start);
+        System.out.print("BFS: ");
+        BFS(1);
 
         // DFS
         System.out.print("DFS: ");
         boolean[] visited = new boolean[n];
-        DFS(start, visited);
+        DFS(1, visited);
 
         sc.close();
     }
 }
-```
 
-### Example Input
-
-```text
-Enter number of elements: 7
-
-Enter 6 connections:
-Enter parent and child: 0 1
-Enter parent and child: 0 2
-Enter parent and child: 1 3
-Enter parent and child: 1 4
-Enter parent and child: 2 5
-Enter parent and child: 2 6
-
-Enter starting element: 0
-```
-
-### Output
-
-```text
-BFS: 0 1 2 3 4 5 6
-DFS: 0 1 3 4 2 5 6
-```
-
-Here, the elements are represented by numbers (`0, 1, 2...`), but the **number of elements and their connections are decided by the user**.
-
-For example, with `5` elements you can enter:
-
-```text
-0 1
-0 2
-1 3
-1 4
-```
-
-The program will work without changing the code.
