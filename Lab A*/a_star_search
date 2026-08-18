@@ -27,7 +27,7 @@ def a_star_search(start_node, goal_node):
     if start_node not in graph or goal_node not in graph:
         return None, float('inf'), float('inf')
 
-    # Min-priority queue: (f_score, g_score, current_node, path_taken)
+    # Min-priority queue
     initial_f = 0 + heuristics[start_node]
     pq = [(initial_f, 0, start_node, [start_node])]
     visited = set()
@@ -53,7 +53,7 @@ def a_star_search(start_node, goal_node):
     return None, float('inf'), float('inf')
 
 
-# Get interactive user input
+# Interactive user input
 start_input = input("Enter Start Node (e.g., A): ").strip().upper()
 goal_input = input("Enter Goal Node (e.g., G): ").strip().upper()
 
