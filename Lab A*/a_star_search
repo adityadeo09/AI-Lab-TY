@@ -1,0 +1,67 @@
+import heapq
+
+# Graph representation: node -> list of (neighbor, path_cost)
+graph = {
+    'A': [('B', 1), ('C', 3)],
+    'B': [('D', 3), ('E', 1)],
+    'C': [('F', 5)],
+    'D': [('G', 2)],
+    'E': [('G', 1)],
+    'F': [('G', 2)],
+    'G': []
+}
+
+# Graph Node Heuristic values h(n)
+heuristics = {
+    'A': 5,
+    'B': 3,
+    'C': 4,
+    'D': 2,
+    'E': 1,
+    'F': 2,
+    'G': 0
+}
+
+def a_star_search(start_node, goal_node):
+    # Validate inputs
+    if start_node not in graph or goal_node not in graph:
+        return None, float('inf'), float('inf')
+
+    # Min-priority queue: (f_score, g_score, current_node, path_taken)
+    initial_f = 0 + heuristics[start_node]
+    pq = [(initial_f, 0, start_node, [start_node])]
+    visited = set()
+
+    while pq:
+        f, g, current, path = heapq.heappop(pq)
+
+        if current in visited:
+            continue
+        visited.add(current)
+
+        # Target reached
+        if current == goal_node:
+            return path, g, f
+
+        # Explore neighbors
+        for neighbor, cost in graph[current]:
+            if neighbor not in visited:
+                g_new = g + cost
+                f_new = g_new + heuristics[neighbor]
+                heapq.heappush(pq, (f_new, g_new, neighbor, path + [neighbor]))
+
+    return None, float('inf'), float('inf')
+
+
+# Get interactive user input
+start_input = input("Enter Start Node (e.g., A): ").strip().upper()
+goal_input = input("Enter Goal Node (e.g., G): ").strip().upper()
+
+path, total_cost, final_f = a_star_search(start_input, goal_input)
+
+if path:
+    print(f"\nFinal Best Path: {' -> '.join(path)}")
+    print(f"Total Path Cost: {total_cost}")
+    print(f"Final f-value: {final_f}")
+else:
+    print("\nNo path found or invalid node specified.")
